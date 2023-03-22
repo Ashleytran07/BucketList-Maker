@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Assignment 6</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <style>
+            @font-face {
+                font-family: "OptimusPrincepsSemiBold";
+                src: url(fonts/OptimusPrincepsSemiBold.ttf);
+            }
+            h1{
+                font-family: serif;
+                color:rgb(39, 100, 255);
+                font-size: 100px;
+                text-align: center;
+            }
+            .bucketlist-form{
+                text-align: center;
+            }
+            #bucket-list img{
+                width: 25%;
+                height: auto;
+                display: block;
+            }
+
+            .form-row{
+                margin-bottom: 15px;
+            }
+
+            #add-btn{
+                margin-top: 33px;
+            }
+
+            .removebtn{
+                background-color: #f44336;
+                color:white;
+                border:none;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                transition-duration: 0.4s;
+                cursor: pointer;
+                border-radius: 8px;
+            }
+            input:required{
+                border-color: green;
+            }
+
+            input:required:invalid{
+                border-color: #f44336;
+            }
+        </style>
+    </head>
+    <body>
+            <div class="container">
+                <div class="row">
+                    <h1 class="col-12">BucketList</h1>
+                </div> <!-- .row -->
+
+            <div class="row mt-4">
+                <h2 class="col-12">Ultimate Bucketlist</h2>
+                <div class="col-12 mt-4">
+                    
+                    <form id="bucketlist-form">
+                        
+                        <div class="form-row">
+                            <div class="col-12 mt-2 col-sm-6 mt-sm-0">
+                                <label for="bucket-item">Bucketlist Item:</label>
+                                <input type="text" class="form-control" id="bucket-item" placeholder="Bucketlist Item" required>
+                            </div> <!-- .col -->
+                        </div> <!-- .form-row -->
+
+                        <div class="form-row">
+                            <div class="col-12 mt-2 col-sm-6 mt-sm-0">
+                                <label for="image-item">Upload Item:</label>
+                                <input type="text" class="form-control" id="image-item" placeholder="https://...">
+                            </div> <!-- .col -->
+                        </div> <!-- .form-row -->
+
+                        <div class="form-row">
+                            <div class="col-12 mt-2 col-sm-6 mt-sm-0">
+                                <label for="rating-item">Rating:</label>
+                                <input type="text" class="form-control" id="rating-item" placeholder="Rate bucketlist item on scale of 10" required>
+                            </div> <!-- .col -->
+
+                            <!--Add button-->
+                            <div class="col-12 mt-2 col-sm-auto mt-sm-0">
+                                <button id="add-btn" type="submit" class="btn btn-primary">Add</button>
+                            </div> <!-- .col -->
+                        </div> <!-- .form-row -->
+
+
+                    </form>
+                </div> <!-- .col -->
+            </div> <!-- .row -->
+
+            <div class="row">
+                <div class="col-12 mt-3">
+
+                    <button id="delete" class="btn btn-outline-danger mb-3">Delete All</button>
+
+                    <table id="bucket-list" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>BucketList Item</th>
+                                <th>Image</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+                                <td class="bucketlist-name">Paris</td>
+                                <td>
+                                    <img src="img/paris.jpeg" alt="Paris">
+                                </td>
+                                <td>7</td>
+                                <td>
+                                    <button type="button" class="removebtn">Remove</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="bucketlist-name">Tokyo</td>
+                                <td>
+                                    <img src="img/tokyo.jpeg" alt="Tokyo">
+                                </td>
+                                <td>7</td>
+                                <td>
+                                    <button type="button" class="removebtn">Remove</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="bucketlist-name">Vietnam</td>
+                                <td>
+                                    <img src="img/vietnam.jpeg" alt="Vietnam">
+                                </td>
+                                <td>10</td>
+                                <td>
+                                    <button type="button" class="removebtn">Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> <!-- .col -->
+            </div> <!-- .row -->
+        </div> <!-- container -->
+
+        <script>
+            //delete
+            document.querySelector("#delete").onclick = () => {
+                document.querySelector("#bucket-list tbody").innerHTML = ''
+            }
+
+            //add
+            document.querySelector("#bucketlist-form").onsubmit = () => {
+                const bucketValue = document.querySelector("#bucket-item").value.trim()
+                const imageValue = document.querySelector("#image-item").value.trim()
+                const ratingValue = document.querySelector("#rating-item").value.trim()
+                let tbody = document.querySelector("#bucket-list tbody")
+                
+                //find duplicates
+                const listNames = document.querySelectorAll(".bucketlist-name")
+
+                for(i = 0; i<listNames.length; i++) {
+                        if (listNames[i].innerHTML == bucketValue) {
+                            alert(bucketValue + " is already on the list.")
+
+                            //clear input field
+                            document.querySelector("#bucket-item").value = ''
+                            document.querySelector("#image-item").value = ''
+                            document.querySelector("#rating-item").value = ''
+
+                            return false
+                        }
+                }
+
+
+                //creating new element
+                    const tr = document.createElement('tr')
+                    const bucketName = document.createElement('td')
+                    const imageDes = document.createElement('td')
+                    const image = document.createElement('img')
+                    const rating = document.createElement('td')
+                    //remove
+                    const removeTd = document.createElement('td')
+                    const removeBtn = document.createElement('button')
+                    removeBtn.innerHTML = "Remove"
+                    //add extra classes
+                    bucketName.classList.add("bucketlist-name")
+                    removeBtn.classList.add("removebtn")
+                    removeBtn.type = "button"
+
+                    image.alt = "New Image"
+                    if(imageValue == ''){
+                        image.src= "img/bucket.jpeg"
+                    }else{
+                        image.src= imageValue
+                    }
+                //create DOM structure
+                    //button
+                    removeTd.appendChild(removeBtn)
+                    //image
+                    imageDes.appendChild(image)
+                    //everything else
+                    tr.appendChild(bucketName)
+                    tr.appendChild(imageDes)
+                    tr.appendChild(rating)
+                    tr.appendChild(removeTd)
+
+                    tbody.appendChild(tr)
+
+                    bucketName.innerHTML = bucketValue
+                    rating.innerHTML = ratingValue
+                
+                //bind remove buttons
+                bindRemoveBtns()
+
+                //clear input field
+                document.querySelector("#bucket-item").value = ''
+                document.querySelector("#image-item").value = ''
+                document.querySelector("#rating-item").value = ''
+                
+                return false
+            }
+
+            function bindRemoveBtns() {
+                const buttons = document.querySelectorAll(".removebtn")
+
+                for (btn of buttons) {
+                    btn.onclick = function() {
+                        // console.log(this.parentElement.parentElement)
+                        this.parentElement.parentElement.remove()
+                    }
+                }
+            }
+
+            bindRemoveBtns()
+        </script>
+    </body>
+</html>
